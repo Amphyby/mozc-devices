@@ -43,6 +43,8 @@ int main() {
       PhotoSensor(24, 25, 26, 27),    // I
   };
 
+  const std::array<int8_t, 9> sensor_indices = { 0, 1, 2, 3, 4, 5, 6, -1, 7 };
+
   std::array<DialController, 9> dials = {
       DialController(),  // A
       DialController(),  // B
@@ -98,37 +100,39 @@ int main() {
   UsbHidKeyboard usb_hid_keyboard(
       /*vendor_id=*/0x6666, /*product_id=*/0x2025,
       /*version=*/0x0109, /*vendor_name=*/"Gboard DIY prototype",
-      /*product_name=*/"Gboard Dial version", /*version_name=*/"9 Dial");
+      /*product_name=*/"Gboard Dial version", /*version_name=*/"9 Dial rev2");
   usb_hid_keyboard.SetAutoKeyRelease(true);
 
   // Wait for a while, just in case, so that the sub-controller can be ready on
   // I2C.
   sleep_ms(100);
 
-  std::vector<uint8_t> i2c_buffer(2);
+  std::vector<uint8_t> i2c_buffer(1);
   bool fn = false;
 
   while (true) {
     uint16_t motor_start_bitmap = 0;
-    for (size_t i = 0; i < sensors.size(); ++i) {
-      dials[i].Update(sensors[i].Read());
+    for (size_t i = 0; i < sensor_indices.size(); ++i) {
+      if (sensor_indices[i] < 0) {
+        // Read the remote sensor H value via I2C.
+        if (i2c.Read(68, 0, i2c_buffer)) {
+          dials[i].Update(i2c_buffer[0]);
+        }
+      } else {
+        // Read one of the local sensors.
+        dials[i].Update(sensors[sensor_indices[i]].Read());
+      }
       if (!dials[i].IsBasePosition()) {
         motor_start_bitmap |= (1 << i);
       }
     }
-    // Read the remote sensor H value via I2C.
-    bool rc = i2c.Read(68, 0, std::span<uint8_t>({i2c_buffer.data(), 1}));
-    if (rc) {
-      dials[8].Update(i2c_buffer[0]);
-      if (!dials[8].IsBasePosition()) {
-        motor_start_bitmap |= (1 << 8);
-      }
-    }
 
     // Drive all motors via I2C.
+    // Use non-burst mode for better stability.
     i2c_buffer[0] = motor_start_bitmap & 0xff;
-    i2c_buffer[1] = motor_start_bitmap >> 8;
-    rc = i2c.Write(68, 0, i2c_buffer);
+    i2c.Write(68, 0, i2c_buffer);
+    i2c_buffer[0] = motor_start_bitmap >> 8;
+    i2c.Write(68, 1, i2c_buffer);
 
     // Check all dials to see if we have pending inputs to send over USB HID.
     for (size_t i = 0; i < dials.size(); ++i) {

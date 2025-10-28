@@ -29,7 +29,7 @@ First, attach the photo sensors from the side where the U1, U2, and U3 markings 
 
 On the back side, there are places to attach three resistors on the `(SENSOR)` side and three on the `(LED)` side, as shown in the figure. Both through-hole and chip resistors can be used, so use the parts of your choice. However, even for through-hole types, it is more stable to mount them without passing them through the holes when attaching the dial.
 
-As mentioned earlier, the resistors depend on the adjustment, but it is recommended to leave the `(SENSOR)` side unpopulated and install 330Ω resistors on the `(LED)` side as a standard.
+As for the resistors, it depends on the adjustment as mentioned above. By default, we recommended using the internal pull-up, leaving the `(SENSOR)` side unpopulated and installing a 330Ω resistor on the `(LED)` side. However, since the internal resistance value varies greatly from device to device, we now recommend using the `no_pull` variant of the firmware, with 33KΩ on the `(SENSOR)` side and 330Ω on the `(LED)` side.
 
 For the 1x5 pin header, using an L-shaped one will fit well in the case.
 
@@ -129,15 +129,23 @@ Follow the general method for the Raspberry Pi Pico. Connect the Raspberry Pi Pi
 
 #### Assembly
 
-Currently, we have released up to the schematics. We will release the Gerber data soon, so please look forward to it!
+The Gerber data for the main board is in `board/gerber/main.zip`. Together with `main_bom.csv` and `main_positions.csv`, this data can be used to order board manufacturing and assembly from JLCPCB. If you order correctly, you will receive a semi-finished board like the one below.
 
-![Coming Soon!!](../images/main_pcb_preview.webp)
+![Main PCB Overview](../images/main_pcb_preview.webp)
 
 ### Assembly
 
 Attach 1x5 L-shaped pin headers for connecting to the sensor boards to `SENSOR A-L`, `SENSOR A-H`, `SENSOR B`, `SENSOR C`, `SENSOR D`, `SENSOR E`, `SENSOR F`, `SENSOR G`, `SENSOR H`, `SENSOR I-L`, and `SENSOR I-H`.
 
 Attach 1x5 L-shaped pin headers for connecting to the motors to `MOTOR A`, `MOTOR B`, `MOTOR C`, `MOTOR D`, `MOTOR E`, `MOTOR F`, `MOTOR G`, `MOTOR H`, and `MOTOR I`.
+
+![Main PCB Pin Headers](../images/main_pcb_ph.webp)
+
+If you attach them facing outwards on the front side like this, it will be easier to route the cables during wiring. It is a good idea to not insert the inner pins all the way, but to leave them slightly raised to create a height difference. Be especially careful with `SENSOR I-H`, which will pass over the USB connector.
+
+The following work on the back side can minimize the board thickness and at the same time avoid short circuits with components and heat dissipation problems.
+
+![Main PCB Back](../images/main_pcb_back.webp)
 
 Attach a 1x3 pin header to the location marked `U1 PWR U2` and short the `U1` and `PWR` positions with a jumper pin.
 
@@ -160,6 +168,16 @@ Referring to the [Common to All Dial Editions](#common-to-all-dial-editions) sec
 | SENSOR H | 2 |
 | SENSOR I-L | 3 |
 | SENSOR I-H | 1 |
+
+### Firmware Flashing
+
+This dedicated board also follows the general method for Raspberry Pi Pico, but since two RP2040s are mounted on the board, you need to flash two firmwares to each.
+
+First, flash the sub-chip using the USB Type-C terminal labeled `USB 2`. The jumper labeled `U1 PWR U2` normally shorts `U1` and `PWR`. This is a setting where the power on the board is taken from the `USB 1` terminal. Temporarily change this to short `PWR` and `U2`.
+
+In this state, connect the `USB 2` terminal to the PC while holding down `BOOT 2`. Copy `sub.uf2` or `sub_no_pull.uf2` to the drive named `RPI-RP2` that appears on the PC. If the writing is successful, the drive will disappear.
+
+Once disconnect from the PC, and then flash the main firmware. Return the jumper setting to shorting `U1` and `PWR`, and connect the `USB 1` terminal to the PC while holding down `BOOT 1`. Similarly, copy `main.uf2` or `main_no_pull.uf2`. When the drive disappears, the flashing is complete.
 
 ## Photo Sensor Adjustment
 

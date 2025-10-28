@@ -8,7 +8,7 @@
 
 - stls/ : STL files for the case
 - stls/one_dial/ : For the 1-dial edition
-- stls/full/ : For the 9-dial edition (Stay tuned!)
+- stls/full/ : For the 9-dial edition
 - pattern/ : Encoder pattern files
 - board/ : KiCad schematics and board layout data
 - board/gerber/ : Gerber data for PCB production and assembly
@@ -102,30 +102,33 @@ Secure the board to the edge of the bottom case with double-sided tape or simila
 
 ### 9-Dial Edition
 
-**The 9-dial edition is currently under adjustment.**
-
 ![9-Dial Edition](./images/nine-dial.webp)
+
+The 9-dial edition consists of nine dial modules.
+These modules are named "Dial A" through "Dial I" respectively.
+These names are used for the encoders, patterns, wiring, and so on.
+
+![Dial ID diagram](./images/dial-list.webp)
+
+The keymap is as follows:
+
+![Keymap](./keymap/keymap.svg)
 
 #### Required Parts
 
 - 3D printed parts
-  - 1 each of left and right bottom cases
-  - 1 each of left and right top cases
-  - 9 dials (including the enter key)
-  - 9 dial caps
-  - 5 types of encoders, 9 in total
-    - 1 for 6 bits
-    - 1 for 4 bits
-    - 3 for 3 bits
-    - 3 for 2 bits
-    - 1 for 1 bit
-  - 9 clutches
+  - Bottom cases (case_bottom_left.stl and case_top_right.stl), one for each side
+  - Top cases (case_top_left.stl and case_top_right.stl), one for each side
+  - 9 dials (dial_a.stl to dial_i.stl), including the enter key
+  - 9 dial caps (cap_a.stl to cap_i.stl)
+  - 9 encoders (encoder_a.stl to encoder_i.stl)
+  - 9 clutches (clutch.stl)
   - 2 types of fixing covers, 9 in total
-    - 7 small
-    - 2 large
+    - 7 small (cover_small.stl)
+    - 2 large (cover_large.stl)
   - 3 types of over-rotation prevention claws, 9 in total
-    - 8 small
-    - 1 triple
+    - 8 small (end.stl)
+    - 1 triple (end3.stl)
 - 9 types of encoder patterns
 - Screws
   - About 100 self-tapping screws, 2mm diameter, 4mm length
@@ -152,17 +155,21 @@ Connect the left and right bottom cases with four M3 screws.
 
 Same as the 1-dial edition.
 
-#### Step 2: Assemble the Cover Module
+#### Step 3: Assemble the Cover Module
 
 Basically the same as the 1-dial edition.
 
 Attach only one sensor board to seven of the covers.
 Attach two sensor boards to two of the covers.
 
-#### Step 3: Attach to the Case
+#### Step 4: Attach to the Case
 
 Basically the same as the 1-dial edition.
 
-#### Step 4: Wiring
+Please refer to the following figure for how to attach the covers.
+
+![Back side](./images/dial-list-back.webp)
+
+#### Step 5: Wiring
 
 Wire the motor and sensor board to the dedicated main board.

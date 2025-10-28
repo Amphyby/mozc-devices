@@ -14,12 +14,16 @@
 #include "../common/usage_tables.h"
 #include "../common/usb_hid_keyboard.h"
 
+#define MOTOR_DIRECTION MotorController::Direction::kForward
+//#define MOTOR_DIRECTION MotorController::Direction::kBackward
+
 int main() {
   // GPIO0 and 1 are used for stdout, and stdin by default.
   stdio_init_all();
 
   // GPIO17, 18, 19, and 20 are used for motor phase control.
-  MotorController motor_controller(MotorController::Mode::k1Motor);
+  MotorController motor_controller(MotorController::Mode::k1Motor,
+                                   MOTOR_DIRECTION);
 
   // GPIO2, 3, 4, 5, 6, and 7 are used for 6bit photo sensing.
   PhotoSensor photo_sensor(2, 3, 4, 5, 6, 7);

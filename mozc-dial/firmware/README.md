@@ -16,6 +16,10 @@ We have included pre-built firmware under `prebuilt/`, so you can use them as is
 
 Use `main.uf2` and `sub.uf2` for the 9-dial edition, and `one_dial.uf2` for the 1-dial edition.
 
+We have also prepared `main_no_pull.uf2`, `sub_no_pull.uf2`, and `one_dial_no_pull.uf2` that do not use internal pull-up for the sensors. For details, please see [About Sensor Adjustment](#about-sensor-adjustment).
+
+If the dial rotation is reversed, try using the firmware with `backward` in its name. It seems that the direction of rotation may differ depending on the shipping time even for the same model number product.
+
 ## Guide to Developing Your Own Firmware
 
 Install [Visual Studio Code](https://code.visualstudio.com/) and add the [Raspberry Pi Pico extension](https://marketplace.visualstudio.com/items?itemName=raspberry-pi.raspberry-pi-pico).

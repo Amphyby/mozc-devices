@@ -41,8 +41,8 @@ const std::vector<uint8_t> a = {
     0x14,  // q
     0x04,  // a
     0x1d,  // z
-    0x39,  // <CAPS>
     0x2c,  // <SPACE>
+    0x39,  // <CAPS>
 };
 const std::vector<uint8_t> fn_a = {};
 const std::vector<uint8_t> modifier_a = {};

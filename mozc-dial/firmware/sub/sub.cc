@@ -14,9 +14,13 @@
 #include "../common/photo_sensor.h"
 #include "i2c_device.h"
 
+#define MOTOR_DIRECTION MotorController::Direction::kForward
+//#define MOTOR_DIRECTION MotorController::Direction::kBackward
+
 namespace {
 
-MotorController motor_controller;
+MotorController motor_controller(MotorController::Mode::k9Motor,
+                                 MOTOR_DIRECTION);
 PhotoSensor sensor_h(26, 27);
 
 uint8_t i2c_reader(uint8_t address) {

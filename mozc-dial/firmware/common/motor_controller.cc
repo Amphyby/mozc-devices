@@ -49,9 +49,10 @@ bool MotorController::OnAlarm(repeating_timer* t) {
   return true;
 }
 
-MotorController::MotorController(Mode mode) {
+MotorController::MotorController(Mode mode, Direction direction)
+    : direction_(direction) {
   if (mode == Mode::k9Motor) {
-    // Each decoder is responsible for a specific phase to driver 1 of 8 motor
+    // Each decoder is responsible for a specific phase to drive 1 of 8 motor
     // drivers. As we have 4 phases, it can drive 4 motors at the same time, and
     // by time division multiplexing, we make them drive 8 motors.
     decoder_[0] = std::make_unique<Decoder>(1, 2, 3, 4);
@@ -88,7 +89,7 @@ void MotorController::Step() {
   size_t start_index = (phase_ & 1) ? kNumOfPhases : 0;
   size_t half_phase = phase_ >> 1;
   for (size_t i = start_index; i < start_index + kNumOfPhases; ++i) {
-    if (!decoder_[i]) {
+    if (!decoder_[i % kNumOfPhases]) {
       continue;
     }
     if (started_[i]) {
@@ -104,5 +105,9 @@ void MotorController::Step() {
   gpio_put(19, on && half_phase == 2);
   gpio_put(20, on && half_phase == 3);
 
-  phase_ = (phase_ + 7) % 8;
+  if (direction_ == Direction::kForward) {
+    phase_ = (phase_ + 1) % 8;
+  } else if (direction_ == Direction::kBackward) {
+    phase_ = (phase_ + 7) % 8;
+  }
 }

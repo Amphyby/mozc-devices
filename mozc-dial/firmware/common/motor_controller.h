@@ -13,7 +13,8 @@
 class MotorController final {
  public:
   enum class Mode { k1Motor, k9Motor };
-  explicit MotorController(Mode = Mode::k9Motor);
+  enum class Direction { kForward, kBackward };
+  explicit MotorController(Mode = Mode::k9Motor, Direction = Direction::kForward);
   MotorController(const MotorController&) = delete;
   MotorController& operator=(const MotorController&) = delete;
   ~MotorController();
@@ -33,6 +34,7 @@ class MotorController final {
   bool started_[kNumOfMotors] = { false };
   uint8_t phase_ = 0;
   repeating_timer timer_;
+  Direction direction_ = Direction::kForward;
 };
 
 #endif  // COMMON_MOTOR_CONTROLLER_H_

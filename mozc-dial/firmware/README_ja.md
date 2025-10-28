@@ -8,13 +8,17 @@
 - common/ : 各ボード共通で用いられるライブラリのソースファイル
 - main/ : 9ダイヤル版メインチップ用のソースファイルとプロジェクト
 - sub/ : 9ダイヤル版サブチップ用のソースファイルとプロジェクト
-- one_dial/ : 1ダイヤル版 Raspberry Pi Pico用のソーとファイルとプロジェクト
+- one_dial/ : 1ダイヤル版 Raspberry Pi Pico用のソースファイルとプロジェクト
 
 ## 事前にビルドしたファームウェア
 
 `prebuilt/`以下に事前にビルドしたファームウェアを収めていますので、変更が不要の場合はこれらをそのまま用いることができます。
 
 9ダイヤル板は`main.uf2`と`sub.uf2`を、1ダイヤル板は`one_dial.uf2`を使用します。
+
+それぞれセンサに内部pull-upを使わない`main_no_pull.uf2`、`sub_no_pull.uf2`、`one_dial_no_pull.uf2`も用意しています。詳しくは[センサの調整について](#センサの調整について)をご覧ください。
+
+ダイヤルの回転方向が逆だった場合には`backward`の名前がついたものを使用してみてください。同じ型番の製品でも出荷時期により回転方向が異なるようです。
 
 ## 独自のファームウェア開発の手引き
 
@@ -52,9 +56,9 @@ Activity Barの`Raspberry Pi Pico Projects`の拡張機能から`Import Project`
 
 などを定義し、`CMakeFiles.txt`のボード設定で指定する事で、キャッシュミス時のQSPI経由でのEEPROMアクセスを最適化し、さらなる性能を引き出す事も可能です。
 
-### センサーの調整について
+### センサの調整について
 
-標準ではセンサーは内部抵抗でpull-upされています。外部抵抗によりpull-upで調整したい場合、`photo_sensor.cc`の`PhotoSensor::PhotoSensor()`内にある`gpio_pull_up(gpio);`を`gpio_disable_pulls(gpio);`に変更してください。
+標準ではセンサは内部抵抗でpull-upされています。外部抵抗によりpull-upで調整したい場合、`photo_sensor.cc`の`PhotoSensor::PhotoSensor()`内にある`gpio_pull_up(gpio);`を`gpio_disable_pulls(gpio);`に変更してください。
 
 あるいは、内部抵抗を有効にしたまま外部抵抗との合成抵抗でpull-upする事も可能です。この場合、内部抵抗は公称値で50-80KΩ、外部抵抗とは並列接続になります。
 

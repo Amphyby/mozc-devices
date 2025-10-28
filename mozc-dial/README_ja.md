@@ -2,7 +2,7 @@ Gboard[English version](./README.md) is available.
 
 # Gboard ダイヤルバージョン
 
-このディレクトリは 2025 年 10 月 1 日にリリースされた Gboard ダイヤルバージョンの設計データとファームウエアを含んでいます。
+このディレクトリは 2025 年 10 月 1 日にリリースされた Gboard ダイヤルバージョンの設計データとファームウェアを含んでいます。
 Gboard ダイヤルバージョンは正式な Google 製品ではありません。
 
 ![Gboard dial version](./images/dial.webp)
@@ -23,7 +23,7 @@ Gboard ダイヤルバージョン
 
 ![Gboard DIY](./images/diy.webp)
 
-今年も 3D プリント用モデルデータ、基板データ、ファームウエアを公開しています。
+今年も 3D プリント用モデルデータ、基板データ、ファームウェアを公開しています。
 
 [ビルドガイドはこちら](./buildguide_ja.md)
 
