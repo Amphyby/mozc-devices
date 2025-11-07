@@ -9,6 +9,9 @@ class SvgGenerator:
         size=(f"{width}mm", f"{height}mm"), profile="full"
     )
     self.dwg.viewbox(0, 0, width, height)
+    self.dwg.add(
+        self.dwg.rect(insert=(0, 0), size=("100%", "100%"), fill="white")
+    )
 
   def circle(self, center_x, center_y, size, stroke="black", fill="none"):
     radius = size / 2
@@ -147,10 +150,10 @@ if __name__ == "__main__":
           # ラベルの長さに応じてフォントサイズを調整
           if len(label) > 8:
             font_size = 2.0
-          elif len(label) > 4:
+          elif len(label) > 2:
             font_size = 3.0
           else:
-            font_size = 4.0
+            font_size = 8.0
           generator.text(small_x, small_y, label, font_size=font_size)
 
   output_filename = "keymap.svg"
